@@ -1,0 +1,46 @@
+<scroll-view 
+  class="index-list" 
+  scroll-y="{{ true }}"
+  scroll-with-animation="{{ true }}"
+  scroll-into-view="{{ selectId }}"
+  bind:scroll="changeScroll"
+>
+  <block 
+    wx:for="{{ indexListGroups }}" 
+    wx:for-item="group" 
+    wx:key="key"
+  >
+    <view
+      id="index-list-column-{{ index }}" 
+      class="index-list-column" 
+      data-index="{{ index }}"
+    >
+      <view class="index-list-column-header">
+        <view class="index-list-column-title {{ index === select ? 'index-list-column-title-fixed' : '' }}">{{ group.key }}</view>
+      </view>
+      <view style="height: {{ group.height }}">
+        <block wx:for="{{ group.list}}" wx:key="id" >
+          <view style="height: {{ _indexListItemHeight }}" class="index-list-column-item">
+            <image
+              wx:if="{{ item.isLoading }}" 
+              class="index-list-column-item-image"
+              src="{{ item.imageUrl }}" 
+              mode="aspectFill"
+            />
+            <text class="index-list-column-item-name">{{ item.isLoading ? item.name : '加载中...' }}</text>
+          </view>
+        </block>
+      </view>
+    </view>
+  </block>
+</scroll-view>
+
+<view class="index-list-keys">
+  <block wx:for="{{ indexListKeys }}" wx:key="item">
+    <view 
+      class="index-list-keys-item {{ select === index ? 'index-list-keys-item-select' : '' }}"
+      bind:tap="toggleKey"
+      mark:index="{{ index }}"
+    >{{ item }}</view>
+  </block>
+</view>
